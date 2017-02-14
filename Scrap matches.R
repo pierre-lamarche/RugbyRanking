@@ -1,12 +1,6 @@
-library(Hmisc)
-library(httr)
-#library(RJSONIO)
-library(rjson)
-#library(jsonlite)
-library(plyr)
-library(dplyr)
-
-getDataRugby <- function(from, to) {
+getMatchesRugby <- function(from, to) {
+  require(rjson)
+  require(dplyr)
   from <- as.Date(from, "%d/%m/%Y")
   to <- as.Date(to, "%d/%m/%Y")
   d1 <- format(from,"%d")
