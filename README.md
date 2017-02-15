@@ -1,1 +1,3 @@
 # RugbyRanking
+
+Following the Six Nations 2017, I read this interesting [webpage](http://www.worldrugby.org/rankings/explanation) explaining how World Rugby's rating was calculated (also thanks a lot to [L'Equipe](http://www.lequipe.fr/Rugby/Actualites/France-ecosse-decisif-en-vue-du-tirage-au-sort-de-la-coupe-du-monde-2019/776621) for pointing out the webpage). I was then wondering how much the ranking was sensitive to the method of computation, and in particular, I was eager to test the ELO method applied to chess for instance. I am grateful to this [Github repo](https://github.com/octonion/rugby) which provides with the Web database for rugby (and more) matches: this avoided me to write text miners in order to extract the results from the World Rugby webpage.
