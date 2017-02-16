@@ -1,9 +1,11 @@
 library(dplyr)
+options(stringsAsFactors = FALSE)
 
 source("Scrap ranking.R")
 source("Scrap matches.R")
 source("Scrap teams.R")
 source("define class team.R")
+source("define class match.R")
 
 matches <- getMatchesRugby(from = "01/01/2000", to = "15/02/2017")
 teams <- getTeamsRugby()
