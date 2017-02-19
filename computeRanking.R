@@ -1,13 +1,13 @@
-computeRk <- function(teamA, teamB, scoreA, scoreB) {
+computeRkWR <- function(scoreA, scoreB, rankingA, rankingB) {
   switch <- (1+0.5*(as.numeric(abs(scoreA - scoreB) >= 15)))*(as.numeric(scoreA > scoreB) - 
                                                                 as.numeric(scoreB > scoreA) +
-                                                                (teamB$ranking - teamA$ranking)*0.1)
+                                                                (rankingB - rankingA)*0.1)
   
-  teamA$ranking <- teamA$ranking + switch
-  teamB$ranking <- teamB$ranking - switch
-  return(list(teamA = teamA, teamB = teamB))
+  rankingA <- rankingA + switch
+  rankingB <- rankingB - switch
+  return(list(rankingA = rankingA, rankingB = rankingB))
 }
 
-computeRanking <- function(match) {
+computeRanking <- function(match, type = c("WR","ELO")) {
   
 }

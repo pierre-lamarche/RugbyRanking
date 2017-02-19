@@ -1,2 +1,3 @@
 setClass("match",
-         slots = c(teamA = "character", teamB = "character", date = "Date"))
+         slots = c(teamA = "team", teamB = "team", scoreA = "numeric", scoreB = "numeric", 
+                   date = "Date"))

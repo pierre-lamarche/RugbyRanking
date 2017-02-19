@@ -21,3 +21,16 @@ matchXV <- mutate(matchXV,
                   time.millis = as.numeric(as.character(time.millis)),
                   date = format(as.POSIXct(time.millis/1000, origin = "1970-01-01"),"%d/%m/%Y"))
 matchXV <- matchXV[order(matchXV$time.millis),]
+
+### create team objects as a start
+for (k in 1:nrow(teamsXV)) {
+  t <- teamsXV[k,]
+  hR <- new("irregular_ts", time = as.POSIXct("31/12/1999", format = "%d/%m/%Y"),
+            value = 40)
+  newObj <- new("team", name = t$teams.naming.name, id = t$teams.id,
+                ranking = 40, dateRanking = as.Date("31/12/1999", format = "%d/%m/%Y"),
+                historicRanking = hR)
+  txt <- paste0("team", t$teams.id, " <- newObj")
+  eval(parse(text = txt))
+}
+
