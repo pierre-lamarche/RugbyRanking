@@ -93,4 +93,7 @@ for (r in 1:nrow(matchXV)) {
 }
 
 ### final ranking
-s
+teamsXV$ranking <- NA
+for (k in 1:nrow(teamsXV)) {
+  teamsXV[k,"ranking"] <- eval(parse(text = paste0("team",teamsXV[k,"teams.id"],"@ranking")))
+}
