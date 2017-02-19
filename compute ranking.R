@@ -6,6 +6,7 @@ source("Scrap matches.R")
 source("Scrap teams.R")
 source("define class team.R")
 source("define class match.R")
+source("computeRanking.R")
 
 matches <- getMatchesRugby(from = "01/01/2000", to = "15/02/2017")
 teams <- getTeamsRugby()
@@ -34,3 +35,17 @@ for (k in 1:nrow(teamsXV)) {
   eval(parse(text = txt))
 }
 
+### compute ranking
+
+for (r in 1:nrow(matchXV)) {
+  dataMatch <- matchXV[r,]
+  idTeamA <- dataMatch$teams.id1
+  idTeamB <- dataMatch$teams.id2
+  teamA <- eval(parse(text = paste0("team",idTeamA)))
+  teamB <- eval(parse(text = paste0("team",idTeamB)))
+  newMatch <- new("match", teamA = teamA, teamB = teamB, scoreA = dataMatch$scores1,
+                  scoreB = dataMatch$scores2, 
+                  date = format(as.POSIXct(dataMatch$time.millis/1000, origin = "1970-01-01"),"%d/%m/%Y"),
+                  competition = dataMatch$events.label)
+  updateTeam <- computeRanking
+}
