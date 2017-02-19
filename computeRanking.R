@@ -8,6 +8,14 @@ computeRkWR <- function(scoreA, scoreB, rankingA, rankingB) {
   return(list(rankingA = rankingA, rankingB = rankingB))
 }
 
+computeRkELO <- function(scoreA, scoreB, rankingA, rankingB, K) {
+  D <- rankingA - rankingB
+  pDA <- 1/(1+10**(-D/15))
+  pDB <- 1/(1+10**(D/15))
+  rankingA <- rankingA + K*((scoreA - scoreB) - pDA)
+  rankingB <- rankingB + K*((scoreB - scoreA) - pDB)
+}
+
 computeRanking <- function(match, type = c("WR","ELO")) {
   
 }
