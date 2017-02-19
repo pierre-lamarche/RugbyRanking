@@ -91,3 +91,6 @@ for (r in 1:nrow(matchXV)) {
   eval(parse(text = paste0("team",idTeamA, " <- updateTeam$teamA")))
   eval(parse(text = paste0("team",idTeamB, " <- updateTeam$teamB")))
 }
+
+### final ranking
+s
