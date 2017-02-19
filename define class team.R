@@ -4,3 +4,10 @@ setClass("irregular_ts",
 setClass("team",
          slots = c(name="character", id="character", ranking="numeric", dateRanking="Date",
                         historicRanking="irregular_ts"))
+
+updateRanking <- function(team, ranking, date) {
+  team@historicRanking@time <- c(team@historicRanking@time, date)
+  team@historicRanking@value <- c(team@historicRanking@value, ranking)
+  team@ranking <- c(team@ranking, ranking)
+  return(team)
+}

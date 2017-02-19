@@ -14,8 +14,16 @@ computeRkELO <- function(scoreA, scoreB, rankingA, rankingB, K) {
   pDB <- 1/(1+10**(D/15))
   rankingA <- rankingA + K*((scoreA - scoreB) - pDA)
   rankingB <- rankingB + K*((scoreB - scoreA) - pDB)
+  return(list(rankingA = rankingA, rankingB = rankingB))
 }
 
 computeRanking <- function(match, type = c("WR","ELO")) {
-  
+  teamA <- match@teamA
+  teamB <- match@teamB
+  if (type == "WR")
+    newRanking <- computeRkWR(match@scoreA, match@scoreB, teamA@ranking, teamB@ranking) else
+      newRanking <- computeRkELO(match@scoreA, match@scoreB, teamA@ranking, teamB@ranking, 10)
+  teamA <- updateRanking(teamA, newRanking$rankingA, as.POSIXct(match@date))
+  teamB <- updateRanking(teamB, newRanking$rankingB, as.POSIXct(match@date))
+  return(list(teamA = teamA, teamB = teamB))
 }
