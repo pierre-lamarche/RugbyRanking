@@ -87,7 +87,7 @@ for (r in 1:nrow(matchXV)) {
                   scoreB = as.numeric(dataMatch$scores2), 
                   date = as.Date(as.POSIXct(dataMatch$time.millis/1000, origin = "1970-01-01")),
                   competition = dataMatch$events.label)
-  updateTeam <- computeRanking(newMatch, type = "WR")
+  updateTeam <- computeRanking(newMatch, type = "ELO")
   eval(parse(text = paste0("team",idTeamA, " <- updateTeam$teamA")))
   eval(parse(text = paste0("team",idTeamB, " <- updateTeam$teamB")))
 }
@@ -97,3 +97,7 @@ teamsXV$ranking <- NA
 for (k in 1:nrow(teamsXV)) {
   teamsXV[k,"ranking"] <- eval(parse(text = paste0("team",teamsXV[k,"teams.id"],"@ranking")))
 }
+
+rank <- teamsXV[order(-teamsXV$ranking),]
+
+plot(team37@historicRanking@time, team37@historicRanking@value, type = "l", lwd = 2, col = "blue")
