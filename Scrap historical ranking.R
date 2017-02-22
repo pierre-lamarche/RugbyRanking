@@ -9,7 +9,7 @@ array_date <- as.Date(as.POSIXct(seq(from = as.numeric(date_start),
 
 
 json <- lapply(array_date, getRankingRugby)
-rankingHistoric <- do.call(json, "rbind")
+rankingHistoric <- do.call("rbind",json)
 
 rankingFR <- filter(rankingHistoric,
                     team.id == "42")
