@@ -67,7 +67,7 @@ computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
                     date = as.POSIXct(as.numeric(dataM$time.millis)/1000, origin = "1970-01-01"),
                     competition = dataM$events.label,
                     weight = as.numeric(dataM$events.rankingsWeight))
-    updateTeam <- computeRanking(newMatch, type = typeRanking)
+    updateTeam <- computeRanking(newMatch, type = typeRanking, bonusReceiver = (newMatch@weight != 2))
     eval(parse(text = paste0("listTeam$team",idTeamA, " <- updateTeam$teamA")))
     eval(parse(text = paste0("listTeam$team",idTeamB, " <- updateTeam$teamB")))
   }
@@ -84,12 +84,19 @@ HRankingFR <- listTeamWR$team42@historicRanking
 HRankingFR_alt <- listTeamWRa$team42@historicRanking
 HRankingFR_ELO <- listTeamELO$team42@historicRanking
 
+wD <- getwd()
+if (!dir.exists("img"))
+  dir.create(paste0(wD,"/img"))
+setwd("img")
+png(file = "rankingFR.png", width = 12, height = 8, units = "cm", res = 2000, pointsize = 4)
 plot(HRankingFR@time, HRankingFR@value, type = "l", col = "blue", lwd = 2, 
-     xlab = NA, ylab = "Ranking", bty = "n", ylim = c(70,90))
-lines(as.POSIXct(rankingFR$date), rankingFR$pts, col = "lightblue", lty = 2, lwd = 2)
+     xlab = NA, ylab = "Ranking", bty = "n", ylim = c(70,90), cex.lab = 1.5, cex.axis = 1.5)
+lines(as.POSIXct(rankingFR$date), rankingFR$pts, col = "red", lty = 2, lwd = 2)
 lines(HRankingFR_alt@time, HRankingFR_alt@value, col = "green", lty = 1, lwd = 2)
-legend("topright",c("WR","WR alt.","WR official"), col = c("blue","green","lightblue"),
-       lty = c(1,1,2), bty = "n")
+legend("topright",c("WR","WR alt.","WR official"), col = c("blue","green","red"),
+       lty = c(1,1,2), lwd = c(2,2,2), bty = "n", cex = 1.5)
+dev.off()
+setwd(wD)
 
 plot(HRankingFR_ELO@time, HRankingFR_ELO@value, type = "l", col = "blue", lwd = 2, 
      xlab = NA, ylab = "Ranking", bty = "n")
