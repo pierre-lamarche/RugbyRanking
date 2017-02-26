@@ -38,8 +38,8 @@ computeRkELO <- function(scoreA, scoreB, rankingA, rankingB, K) {
   return(list(rankingA = rankingA, rankingB = rankingB))
 }
 
-computeRanking <- function(match, type = c("WR","ELO","WRa")) {
-  teamA <- match@teamA
+computeRanking <- function(match, type = c("WR","ELO","WRa"), bonusReceiver = TRUE) {
+  teamA <- match@teamA + as.numeric(bonusReceiver)*3
   teamB <- match@teamB
   if (type == "WR")
     newRanking <- computeRkWR(match@scoreA, match@scoreB, teamA@ranking, teamB@ranking, 
@@ -47,7 +47,7 @@ computeRanking <- function(match, type = c("WR","ELO","WRa")) {
                                 newRanking <- computeRkELO(match@scoreA, match@scoreB, teamA@ranking, teamB@ranking, 10) else
                                   newRanking <- computeRkWR_alt(match@scoreA, match@scoreB, teamA@ranking, teamB@ranking, 
                                                                 match@weight)
-  teamA <- updateRanking(teamA, newRanking$rankingA, as.POSIXct(match@date, format = "%Y-%m-%d"))
+  teamA <- updateRanking(teamA, newRanking$rankingA - as.numeric(bonusReceiver)*3, as.POSIXct(match@date, format = "%Y-%m-%d"))
   teamB <- updateRanking(teamB, newRanking$rankingB, as.POSIXct(match@date, format = "%Y-%m-%d"))
   return(list(teamA = teamA, teamB = teamB))
 }
