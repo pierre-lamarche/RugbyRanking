@@ -6,15 +6,15 @@ Recomputing the ranking since 2003, and trying alternative methods of ranking:
 
 | Position | Official WR ranking | Alternative WR ranking | ELO ranking |
 |----------|---------------------|------------------------|-------------|
-| 1        | NZL                 | NZL                    |             |
-| 2        | ENG                 | ENG                    |             |
-| 3        | AUS                 | AUS                    |             |
-| 4        | IRE                 | IRE                    |             |
-| 5        | WAL                 | WAL                    |             |
-| 6        | RSA                 | SCO                    |             |
-| 7        | FRA                 | RSA                    |             |
-| 8        | SCO                 | FRA                    |             |
-| 9        | ARG                 | ARG                    |             |
-| 10       | FJI                 | FJI                    |             |
+| 1        | NZL                 | NZL                    | ENG         |
+| 2        | ENG                 | ENG                    | NZL         |
+| 3        | AUS                 | AUS                    | AUS         |
+| 4        | IRE                 | IRE                    | IRE         |
+| 5        | WAL                 | WAL                    | WAL         |
+| 6        | RSA                 | SCO                    | FRA         |
+| 7        | FRA                 | RSA                    | SCO         |
+| 8        | SCO                 | FRA                    | RSA         |
+| 9        | ARG                 | ARG                    | FJI         |
+| 10       | FJI                 | FJI                    | GEO         |
 
 *Ranking as on Feb, 19, 2017.*
