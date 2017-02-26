@@ -4,17 +4,17 @@ Following the Six Nations 2017, I read this interesting [webpage](http://www.wor
 
 Recomputing the ranking since 2003, and trying alternative methods of ranking:
 
-| Position | Official WR ranking | Alternative WR ranking | ELO ranking |
-|----------|---------------------|------------------------|-------------|
-| 1        | NZL                 | NZL                    | ENG         |
-| 2        | ENG                 | ENG                    | NZL         |
-| 3        | AUS                 | AUS                    | AUS         |
-| 4        | IRE                 | IRE                    | IRE         |
-| 5        | WAL                 | WAL                    | WAL         |
-| 6        | RSA                 | SCO                    | FRA         |
-| 7        | FRA                 | RSA                    | SCO         |
-| 8        | SCO                 | FRA                    | RSA         |
-| 9        | ARG                 | ARG                    | FJI         |
-| 10       | FJI                 | FJI                    | GEO         |
+| Position | Official WR ranking | Alternative WR ranking | ELO ranking | Alternative ELO ranking |
+|----------|---------------------|------------------------|-------------|--------|
+| 1        | NZL                 | NZL                    | ENG         | NZL    |
+| 2        | ENG                 | ENG                    | NZL         | ENG    | 
+| 3        | AUS                 | AUS                    | AUS         | AUS    |
+| 4        | IRE                 | IRE                    | IRE         | IRE    |
+| 5        | WAL                 | WAL                    | WAL         | FRA    |
+| 6        | RSA                 | SCO                    | FRA         | SCO    |
+| 7        | FRA                 | RSA                    | SCO         | ARG    |
+| 8        | SCO                 | FRA                    | RSA         | WAL    |
+| 9        | ARG                 | ARG                    | FJI         | RSA    |
+| 10       | FJI                 | FJI                    | GEO         | GEO    |
 
 *Ranking as on Feb, 19, 2017.*
