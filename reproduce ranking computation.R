@@ -100,3 +100,39 @@ setwd(wD)
 
 plot(HRankingFR_ELO@time, HRankingFR_ELO@value, type = "l", col = "blue", lwd = 2, 
      xlab = NA, ylab = "Ranking", bty = "n")
+
+### extract new positions
+
+listRanking <- lapply(listTeamWR, function(x) {
+  v <- c(x@name, x@id, x@ranking)
+  names(v) <- c("name","id","ranking")
+  return(v)
+}
+)
+listRanking <- as.data.frame(do.call("rbind", listRanking))
+listRanking <- listRanking[order(-as.numeric(listRanking$ranking)),]
+listRanking$pos <- cumsum(rep(1,nrow(listRanking)))
+
+
+listRankingWRa <- lapply(listTeamWRa, function(x) {
+  v <- c(x@name, x@id, x@ranking)
+  names(v) <- c("name","id","ranking")
+  return(v)
+}
+)
+listRankingWRa <- as.data.frame(do.call("rbind", listRankingWRa))
+listRankingWRa <- listRankingWRa[order(-as.numeric(listRankingWRa$ranking)),]
+listRankingWRa$pos <- cumsum(rep(1,nrow(listRankingWRa)))
+
+
+listRankingELO <- lapply(listTeamELO, function(x) {
+  v <- c(x@name, x@id, x@ranking)
+  names(v) <- c("name","id","ranking")
+  return(v)
+}
+)
+listRankingELO <- as.data.frame(do.call("rbind", listRankingELO))
+listRankingELO <- listRankingELO[order(-as.numeric(listRankingELO$ranking)),]
+listRankingELO$pos <- cumsum(rep(1,nrow(listRankingELO)))
+
+
