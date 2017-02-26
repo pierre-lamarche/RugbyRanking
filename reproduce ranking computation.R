@@ -60,8 +60,6 @@ computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
     idTeamA <- dataM$teams.id1
     idTeamB <- dataM$teams.id2
     teamA <- eval(parse(text = paste0("listTeam$team",idTeamA)))
-    ### bonus for the receiving team
-    #teamA@ranking <- teamA@ranking + 3
     teamB <- eval(parse(text = paste0("listTeam$team",idTeamB)))
     newMatch <- new("match", teamA = teamA, teamB = teamB, 
                     scoreA = as.numeric(dataM$scores1),
