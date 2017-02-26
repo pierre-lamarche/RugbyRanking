@@ -99,11 +99,16 @@ lines(HRankingFR_alt@time, HRankingFR_alt@value, col = "green", lty = 1, lwd = 2
 legend("topright",c("WR","WR alt.","WR official"), col = c("blue","green","red"),
        lty = c(1,1,2), lwd = c(2,2,2), bty = "n", cex = 1.5)
 dev.off()
-setwd(wD)
 
+png(file = "rankingELOFR.png", width = 12, height = 8, units = "cm", res = 2000, pointsize = 4)
 plot(HRankingFR_ELO@time, HRankingFR_ELO@value, type = "l", col = "blue", lwd = 2, 
      xlab = NA, ylab = "Ranking", bty = "n", ylim = c(70,110))
 lines(HRankingFR_ELOd@time, HRankingFR_ELOd@value, col = "green", lwd = 2)
+lines(as.POSIXct(rankingFR$date), rankingFR$pts, col = "red", lty = 2, lwd = 2)
+legend("topright",c("ELO","ELO alt.","WR official"), col = c("blue","green","red"),
+       lty = c(1,1,2), lwd = c(2,2,2), bty = "n", cex = 1.5)
+dev.off()
+setwd(wD)
 
 ### extract new positions
 
