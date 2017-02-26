@@ -49,7 +49,7 @@ computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
     newObj <- new("team", name = t$team.name, id = t$team.id,
                   ranking = as.numeric(t$pts), dateRanking = as.POSIXct(t$date),
                   historicRanking = hR)
-    txt <- paste0("listTeam <- c(listTeam, team", t$team.id, " = team", t$team.id,")")
+    txt <- paste0("listTeam <- c(listTeam, team", t$team.id, " = newObj)")
     eval(parse(text = txt))
   }
   
@@ -77,12 +77,16 @@ computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
 }
 
 listTeamWR <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WR")
+listTeamWRa <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WRa")
 
 rankingFR <- filter(rankingHistoric,
                     team.id == "42")
-HRankingFR <- team42@historicRanking
+HRankingFR <- listTeamWR$team42@historicRanking
+HRankingFR_alt <- listTeamWRa$team42@historicRanking
 
 
 
-plot(team42@historicRanking@time, team42@historicRanking@value, type = "l", col = "blue", lwd = 2)
+plot(HRankingFR@time, HRankingFR@value, type = "l", col = "blue", lwd = 2, 
+     xlab = NA, ylab = "Ranking", bty = "n", ylim = c(70,90))
 lines(as.POSIXct(rankingFR$date), rankingFR$pts, col = "lightblue", lty = 2, lwd = 2)
+lines(HRankingFR_alt@time, HRankingFR_alt@value, col = "green", lty = 1, lwd = 2)

@@ -23,8 +23,8 @@ computeRkWR_alt <- function(scoreA, scoreB, rankingA, rankingB, weight) {
   
   if (abs(scoreA - scoreB > 15))
     weight <- weight*1.5
-  rankingA <- rankingA + switch*weight
-  rankingB <- rankingB - switch*weight
+  rankingA <- rankingA - swap*weight
+  rankingB <- rankingB + swap*weight
   return(list(rankingA = rankingA, rankingB = rankingB))
 }
 
