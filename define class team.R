@@ -2,7 +2,7 @@ setClass("irregular_ts",
          slots = c(time = "POSIXct", value = "numeric"))
 
 setClass("team",
-         slots = c(name="character", id="character", ranking="numeric", dateRanking="Date",
+         slots = c(name="character", id="character", ranking="numeric", dateRanking="POSIXct",
                         historicRanking="irregular_ts"))
 
 updateRanking <- function(team, ranking, date) {
