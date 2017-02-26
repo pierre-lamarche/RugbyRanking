@@ -78,15 +78,20 @@ computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
 
 listTeamWR <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WR")
 listTeamWRa <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WRa")
+listTeamELO <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "ELO")
 
 rankingFR <- filter(rankingHistoric,
                     team.id == "42")
 HRankingFR <- listTeamWR$team42@historicRanking
 HRankingFR_alt <- listTeamWRa$team42@historicRanking
-
-
+HRankingFR_ELO <- listTeamELO$team42@historicRanking
 
 plot(HRankingFR@time, HRankingFR@value, type = "l", col = "blue", lwd = 2, 
      xlab = NA, ylab = "Ranking", bty = "n", ylim = c(70,90))
 lines(as.POSIXct(rankingFR$date), rankingFR$pts, col = "lightblue", lty = 2, lwd = 2)
 lines(HRankingFR_alt@time, HRankingFR_alt@value, col = "green", lty = 1, lwd = 2)
+legend("topright",c("WR","WR alt.","WR official"), col = c("blue","green","lightblue"),
+       lty = c(1,1,2), bty = "n")
+
+plot(HRankingFR_ELO@time, HRankingFR_ELO@value, type = "l", col = "blue", lwd = 2, 
+     xlab = NA, ylab = "Ranking", bty = "n")
