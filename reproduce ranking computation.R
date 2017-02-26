@@ -77,12 +77,15 @@ computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
 listTeamWR <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WR")
 listTeamWRa <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WRa")
 listTeamELO <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "ELO")
+listTeamELOd <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "ELOd")
+
 
 rankingFR <- filter(rankingHistoric,
                     team.id == "42")
 HRankingFR <- listTeamWR$team42@historicRanking
 HRankingFR_alt <- listTeamWRa$team42@historicRanking
 HRankingFR_ELO <- listTeamELO$team42@historicRanking
+HRankingFR_ELOd <- listTeamELOd$team42@historicRanking
 
 wD <- getwd()
 if (!dir.exists("img"))
@@ -99,7 +102,8 @@ dev.off()
 setwd(wD)
 
 plot(HRankingFR_ELO@time, HRankingFR_ELO@value, type = "l", col = "blue", lwd = 2, 
-     xlab = NA, ylab = "Ranking", bty = "n")
+     xlab = NA, ylab = "Ranking", bty = "n", ylim = c(70,110))
+lines(HRankingFR_ELOd@time, HRankingFR_ELOd@value, col = "green", lwd = 2)
 
 ### extract new positions
 
@@ -136,3 +140,12 @@ listRankingELO <- listRankingELO[order(-as.numeric(listRankingELO$ranking)),]
 listRankingELO$pos <- cumsum(rep(1,nrow(listRankingELO)))
 
 
+listRankingELOd <- lapply(listTeamELOd, function(x) {
+  v <- c(x@name, x@id, x@ranking)
+  names(v) <- c("name","id","ranking")
+  return(v)
+}
+)
+listRankingELOd <- as.data.frame(do.call("rbind", listRankingELOd))
+listRankingELOd <- listRankingELOd[order(-as.numeric(listRankingELOd$ranking)),]
+listRankingELOd$pos <- cumsum(rep(1,nrow(listRankingELOd)))

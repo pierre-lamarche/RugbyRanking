@@ -31,7 +31,6 @@ computeRkWR_alt <- function(scoreA, scoreB, rankingA, rankingB, weight) {
 computeRkELO <- function(scoreA, scoreB, rankingA, rankingB, K) {
   D <- rankingA - rankingB
   pDA <- 1/(1+10**(-D/20))
-  #pDB <- 1/(1+10**(D/20))
   outcome <- as.numeric(scoreA > scoreB) + 0.5*as.numeric(scoreA == scoreB)
   swap <- K*(outcome - pDA)
   rankingA <- rankingA + swap
@@ -39,16 +38,30 @@ computeRkELO <- function(scoreA, scoreB, rankingA, rankingB, K) {
   return(list(rankingA = rankingA, rankingB = rankingB))
 }
 
-computeRanking <- function(match, type = c("WR","ELO","WRa"), bonusReceiver = TRUE) {
+computeRkELOd <- function(scoreA, scoreB, rankingA, rankingB, K) {
+  D <- rankingA - rankingB
+  pDA <- 1/(1+10**(-D/20))
+  outcome <- ifelse(scoreA == 0 & scoreB == 0, 0.5, scoreA/(scoreA + scoreB))
+  swap <- K*(outcome - pDA)
+  rankingA <- rankingA + swap
+  rankingB <- rankingB - swap
+  return(list(rankingA = rankingA, rankingB = rankingB))
+}
+
+computeRanking <- function(match, type = c("WR","ELO","WRa","ELOd"), bonusReceiver = TRUE) {
   teamA <- match@teamA
   teamB <- match@teamB
   if (type == "WR")
     newRanking <- computeRkWR(match@scoreA, match@scoreB, teamA@ranking + as.numeric(bonusReceiver)*3, 
                               teamB@ranking, match@weight) else if (type == "ELO")
                                 newRanking <- computeRkELO(match@scoreA, match@scoreB, teamA@ranking+ as.numeric(bonusReceiver)*3,
-                                                           teamB@ranking, 10) else
-                                  newRanking <- computeRkWR_alt(match@scoreA, match@scoreB, 
-                                                                teamA@ranking + as.numeric(bonusReceiver)*3, teamB@ranking, match@weight)
+                                                           teamB@ranking, 10) else if (type == "WRa")
+                                                             newRanking <- computeRkWR_alt(match@scoreA, match@scoreB, 
+                                                                                           teamA@ranking + as.numeric(bonusReceiver)*3, 
+                                                                                           teamB@ranking, match@weight) else newRanking <- computeRkELOd(match@scoreA, 
+                                                                                                                                                         match@scoreB, 
+                                                                                                                                                         teamA@ranking+ as.numeric(bonusReceiver)*3,
+                                                                                                                                                         teamB@ranking, 10)
   teamA <- updateRanking(teamA, newRanking$rankingA - as.numeric(bonusReceiver)*3, as.POSIXct(match@date, format = "%Y-%m-%d"))
   teamB <- updateRanking(teamB, newRanking$rankingB, as.POSIXct(match@date, format = "%Y-%m-%d"))
   return(list(teamA = teamA, teamB = teamB))
