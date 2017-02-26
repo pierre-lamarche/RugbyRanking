@@ -1,5 +1,6 @@
 library(dplyr)
 library(sqldf)
+library(Cairo)
 options(stringsAsFactors = FALSE)
 
 source("Scrap ranking.R")
@@ -37,42 +38,51 @@ matchesXV <- mutate(matchesXV,
                                                    events.rankingsWeight))
 matchesXV <- matchesXV[order(as.numeric(matchesXV$time.millis)),]
 
-### create team objects as a start
-for (k in 1:nrow(teamsXV_ranked)) {
-  t <- teamsXV_ranked[k,]
-  hR <- new("irregular_ts", time = as.POSIXct(t$date),
-            value = as.numeric(t$pts))
-  newObj <- new("team", name = t$team.name, id = t$team.id,
-                ranking = as.numeric(t$pts), dateRanking = as.POSIXct(t$date),
-                historicRanking = hR)
-  txt <- paste0("team", t$team.id, " <- newObj")
-  eval(parse(text = txt))
+
+computeGlobalRanking <- function(dataTeam, dataMatch, typeRanking) {
+  ### create team objects as a start
+  listTeam <- list()
+  for (k in 1:nrow(dataTeam)) {
+    t <- dataTeam[k,]
+    hR <- new("irregular_ts", time = as.POSIXct(t$date),
+              value = as.numeric(t$pts))
+    newObj <- new("team", name = t$team.name, id = t$team.id,
+                  ranking = as.numeric(t$pts), dateRanking = as.POSIXct(t$date),
+                  historicRanking = hR)
+    txt <- paste0("listTeam <- c(listTeam, team", t$team.id, " = team", t$team.id,")")
+    eval(parse(text = txt))
+  }
+  
+  ### compute ranking
+  
+  for (r in 1:nrow(dataMatch)) {
+    dataM <- dataMatch[r,]
+    idTeamA <- dataM$teams.id1
+    idTeamB <- dataM$teams.id2
+    teamA <- eval(parse(text = paste0("listTeam$team",idTeamA)))
+    ### bonus for the receiving team
+    #teamA@ranking <- teamA@ranking + 3
+    teamB <- eval(parse(text = paste0("listTeam$team",idTeamB)))
+    newMatch <- new("match", teamA = teamA, teamB = teamB, 
+                    scoreA = as.numeric(dataM$scores1),
+                    scoreB = as.numeric(dataM$scores2), 
+                    date = as.POSIXct(as.numeric(dataM$time.millis)/1000, origin = "1970-01-01"),
+                    competition = dataM$events.label,
+                    weight = as.numeric(dataM$events.rankingsWeight))
+    updateTeam <- computeRanking(newMatch, type = typeRanking)
+    eval(parse(text = paste0("listTeam$team",idTeamA, " <- updateTeam$teamA")))
+    eval(parse(text = paste0("listTeam$team",idTeamB, " <- updateTeam$teamB")))
+  }
+  return(listTeam)
 }
 
-### compute ranking
-
-for (r in 1:nrow(matchesXV)) {
-  dataMatch <- matchesXV[r,]
-  idTeamA <- dataMatch$teams.id1
-  idTeamB <- dataMatch$teams.id2
-  teamA <- eval(parse(text = paste0("team",idTeamA)))
-  ### bonus for the receiving team
-  #teamA@ranking <- teamA@ranking + 3
-  teamB <- eval(parse(text = paste0("team",idTeamB)))
-  newMatch <- new("match", teamA = teamA, teamB = teamB, 
-                  scoreA = as.numeric(dataMatch$scores1),
-                  scoreB = as.numeric(dataMatch$scores2), 
-                  date = as.POSIXct(as.numeric(dataMatch$time.millis)/1000, origin = "1970-01-01"),
-                  competition = dataMatch$events.label,
-                  weight = as.numeric(dataMatch$events.rankingsWeight))
-  updateTeam <- computeRanking(newMatch, type = "WR")
-  eval(parse(text = paste0("team",idTeamA, " <- updateTeam$teamA")))
-  eval(parse(text = paste0("team",idTeamB, " <- updateTeam$teamB")))
-}
-
+listTeamWR <- computeGlobalRanking(teamsXV_ranked, matchesXV, type = "WR")
 
 rankingFR <- filter(rankingHistoric,
                     team.id == "42")
+HRankingFR <- team42@historicRanking
+
+
 
 plot(team42@historicRanking@time, team42@historicRanking@value, type = "l", col = "blue", lwd = 2)
 lines(as.POSIXct(rankingFR$date), rankingFR$pts, col = "lightblue", lty = 2, lwd = 2)
